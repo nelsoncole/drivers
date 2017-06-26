@@ -136,8 +136,6 @@ void mouse_install(){
 
 void update_mouse(){
 
-/* esta função é de improvisação estar em construção*/
-
 posicao_mouse = delta_x + (80 * delta_y);
 
      cli();
