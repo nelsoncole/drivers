@@ -77,7 +77,7 @@ void P8042_install(){
 	kbdc_wait(1);   // Limpar o buffer, só por diversão
 
 	kbdc_wait(1);    
-	outb(0x64,0x20);     // defina a leitura do byte actual de configuração do controlador PS/2
+	outb(0x64,0x20);     // defina o byte de leitura do byte actual do controlador PS/2
 
 	kbdc_wait(0);
 	status=inb(0x60)|2;  /* Activar o segundo despositivo PS/2, modificando o status de configuração do controlador PS/2. 
@@ -88,7 +88,7 @@ void P8042_install(){
 
 	
 	kbdc_wait(1);
-	outb(0x64,0x60);  // defina, a escrita  de byte de configuração do controlador PS/2
+	outb(0x64,0x60);  // define byte de  escrita  do byte de configuração do controlador PS/2
 
 	
 	kbdc_wait(1);
