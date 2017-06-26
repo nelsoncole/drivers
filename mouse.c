@@ -19,7 +19,7 @@ __asm__ __volatile__(\
 "outb %%al,%0"::"dN"((p)) :"eax"\
 )  /* Valeu Fred */
 
-BYTE delta_x,delta_y=20;
+BYTE delta_x,delta_y;
 WORD posicao_mouse;
 
 
