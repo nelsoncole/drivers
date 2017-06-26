@@ -148,6 +148,7 @@ posicao_mouse = delta_x + (80 * delta_y);
 }
 
 
+// este é o offset no IDT vertor 44 
 
 void mouse_irq(){
 	
