@@ -151,17 +151,20 @@ posicao_mouse = delta_x + (80 * delta_y);
 
 void mouse_irq(){
 	
+
+// código em construção
+
 if(count_mouse== 3){
 
 buffer_mouse[count_mouse++] = inb(0x60);
-	; // aprimeira leitura é do status do rato.
+	// buffer_mouse[0]. aprimeira leitura é do status do rato.
 
-	delta_x = buffer_mouse[1];
+	   delta_x = buffer_mouse[1];
 	
-	delta_y = buffer_mouse[2];
+	   delta_y = buffer_mouse[2];
 
-	update_mouse();
- count_mouse = 0;
+	   update_mouse();
+    count_mouse = 0;
 	
 }
 	
