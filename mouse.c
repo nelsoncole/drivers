@@ -74,7 +74,6 @@ void P8042_install(){
 	kbdc_wait(1);
 	outb(0x64,0xA7);  /* Desativar a segunda porta PS/2, hahaha por default ela já vem desativada, só para constar */
 
-	kbdc_wait(1);   // Limpar o buffer, só por diversão
 
 	kbdc_wait(1);    
 	outb(0x64,0x20);     // defina o byte de leitura do byte actual do controlador PS/2
