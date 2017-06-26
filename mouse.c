@@ -21,7 +21,8 @@ __asm__ __volatile__(\
 
 BYTE delta_x,delta_y;
 WORD posicao_mouse;
-
+char buffer_mouse[3];
+int count_mouse;
 
 
 
@@ -150,16 +151,17 @@ posicao_mouse = delta_x + (80 * delta_y);
 
 void mouse_irq(){
 	
-if(inb(0x64)&1) // emprovisaremos por enquanto
-{
+if(count_mouse== 3){
 
-	inb(0x60); // aprimeira leitura é do status do rato.
+buffer_mouse[count_mouse++] = inb(0x60);
+	; // aprimeira leitura é do status do rato.
 
-	delta_x = inb(0x60);
+	delta_x = buffer_mouse[1];
 	
-	delta_y = inb(0x60);
+	delta_y = buffer_mouse[2];
 
 	update_mouse();
+ count_mouse = 0;
 	
 }
 	
