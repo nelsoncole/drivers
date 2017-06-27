@@ -19,10 +19,12 @@ __asm__ __volatile__(\
 "outb %%al,%0"::"dN"((p)) :"eax"\
 )  /* Valeu Fred */
 
-BYTE delta_x,delta_y;
+BYTE mouse_status,delta_x,delta_y,buffer_mouse[3];
+
+int count_mouse=0;
+
 WORD posicao_mouse;
-char buffer_mouse[3];
-int count_mouse;
+
 
 
 
@@ -75,9 +77,8 @@ void P8042_install(){
 	kbdc_wait(1);
 	outb(0x64,0xA7);  /* Desativar a segunda porta PS/2, hahaha por default ela já vem desativada, só para constar */
 
-
 	kbdc_wait(1);    
-	outb(0x64,0x20);     // defina o byte de leitura do byte actual do controlador PS/2
+	outb(0x64,0x20);     // defina a leitura do byte actual de configuração do controlador PS/2
 
 	kbdc_wait(0);
 	status=inb(0x60)|2;  /* Activar o segundo despositivo PS/2, modificando o status de configuração do controlador PS/2. 
@@ -88,7 +89,7 @@ void P8042_install(){
 
 	
 	kbdc_wait(1);
-	outb(0x64,0x60);  // define byte de  escrita  do byte de configuração do controlador PS/2
+	outb(0x64,0x60);  // defina, a escrita  de byte de configuração do controlador PS/2
 
 	
 	kbdc_wait(1);
@@ -104,10 +105,9 @@ void P8042_install(){
 	kbdc_wait(1);
 	outb(0x64,0xA8);  // activar a segunda porta PS/2
 
-	mouse_write(0xF6);  // dizemos ao rato que use as configurações padrão
-	mouse_write(0xF4);  // agora habilitamos o rato.
 
-/* NOTA. Esta configuração discarta do teste do controlador PS/2 e de seus dispositivos. Depois façamos a configuração decente e minuciosa do P8042.
+
+/* NOTA. Esta configuração discata o teste do controlador PS/2 e de seus dispositivos. Depois façamos a configuração decente e minuciosa do P8042.
  
 */
 
@@ -121,7 +121,7 @@ void cursor_mouse(){
 	outb(0x3D4,0x0A);
      	outb(0x3D5,0);
 	outb(0x3D4,0xB);
-     	outb(0x3D5,24);
+     	outb(0x3D5,16);
 	sti();
 
 }
@@ -129,14 +129,23 @@ void cursor_mouse(){
 
 void mouse_install(){
 
-     	cursor_mouse();
+	
+
+	mouse_write(0xFF);   // reseta o teclado
+	mouse_write(0xF6);  // dizemos ao rato que use as configurações padrão
+	mouse_write(0xF4);  // agora habilitamos o rato.
+	while(!0xFA)mouse_read();
+	cursor_mouse();
+
 	irq_enable(12);
 
 }
 
 void update_mouse(){
 
-posicao_mouse = delta_x + (80 * delta_y);
+/* esta função é de improvisação estar em construção*/
+
+posicao_mouse = posicao_mouse + (delta_x);
 
      cli();
      outb(0x3D4,0x0E);
@@ -148,27 +157,24 @@ posicao_mouse = delta_x + (80 * delta_y);
 }
 
 
-// este é o offset no IDT vertor 44 
 
 void mouse_irq(){
+
+	buffer_mouse[count_mouse++]=mouse_read();
 	
+if(count_mouse==3){
 
-// código em construção
+	mouse_status = buffer_mouse[0];
 
-if(count_mouse== 3){
-
-buffer_mouse[count_mouse++] = inb(0x60);
-	// buffer_mouse[0]. aprimeira leitura é do status do rato.
-
-	   delta_x = buffer_mouse[1];
+	delta_x = buffer_mouse[1];
 	
-	   delta_y = buffer_mouse[2];
+	delta_y = buffer_mouse[2];
 
-	   update_mouse();
-    count_mouse = 0;
+	update_mouse();
+
+	count_mouse=0;
 	
 }
-	
 		
 
 }
