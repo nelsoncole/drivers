@@ -54,6 +54,11 @@ BYTE mouse_read(){
 }
 
 
+/* configurando o controlador PS/2, 
+
+   e activar a segunda porta PS/2 (mouse)
+
+*/
 void P8042_install(){
 	
 	BYTE status;
