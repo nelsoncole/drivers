@@ -1,0 +1,13 @@
+# Chip P8042 (PS/2)
+
+#NOTA1:
+
+Antens de tentar ler dados da porta 0x60
+o bit 0 da porta 0x64 (read status) deve ser configurado dizendo que existe dados a ser lido. Ver código no arquivo P8042.c função kbdc_wait(int);
+
+
+O mesmo se dá quando se escre da porta 0x60 ou 0x64, o bit 1 deve ser limpo. Ver código no arquivo P8042.c função kbdc_wait(int);
+
+#NOTA2:
+ 
+Tanto os dados do teclado e do mouse são lidos e escritos na porta 0x60, ao tentar escrever e ler da porta 0x60 fora do IRQ12 estaremos a lidar com bytes do teclado, para ler dados do teclado segunda porta PS/2, devemos antes configurar o comando ler ou escrever o próximo byte da segunda porta PS/2 (mouse), enviando o comando 0xD4 para a porta 0x64, ver código no arquivo P8042.c função mouse_write(int);
