@@ -1,0 +1,14 @@
+#RTC
+
+Nota1:
+
+Má configuração do o RTC/CMOS é realmente perigoso para o Hardware. Sempre que lidar com portas rtc/cmos é muito importante 
+que as interrupções mascaráveis e não mascaráveis estejam desablitadas no momento.
+Uma interrupção no momento da programação RTC/CMOS colocaria o Chip num estado indefinido
+
+
+
+NOTA2: 
+
+É importante ler o registro de status C no final de cada interrupção irq8, caso
+o contrário o chip não voltará a enviar irq8.
