@@ -131,7 +131,7 @@ void mouse_install(){
 
 	
 
-	mouse_write(0xFF);   // reseta o teclado
+	mouse_write(0xFF);   // reseta o mouse
 	mouse_write(0xF6);  // dizemos ao rato que use as configurações padrão
 	mouse_write(0xF4);  // agora habilitamos o rato.
 	while(!0xFA)mouse_read();
