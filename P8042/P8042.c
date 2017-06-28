@@ -5,7 +5,19 @@
  *
  * Lubango, 28 de Junho de 2017
  *
+ *
+ * Código em construção
+ *
  */
+
+
+
+
+#define outanyb(p)\ 
+__asm__ __volatile__(\
+"outb %%al,%0"::"dN"((p)) :"eax"\
+)  /* Valeu Fred */
+
 
 void kbdc_wait(BYTE type){
 	if(type==0){
