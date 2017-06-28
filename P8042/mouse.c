@@ -1,10 +1,10 @@
 /* 
  * Nelson Cole
  * (nelsoncole72@gmail.com)
- * Lubango, 26 de Junho de 2017.
+ * Lubango, 28 de Junho de 2017.
  *
  *
- * Não leve muito a cério, este código está em construção 
+ * Código em construção
  * 
 */
 
@@ -14,10 +14,6 @@
 #include <mouse.h>
 
 
-#define outanyb(p)\ 
-__asm__ __volatile__(\
-"outb %%al,%0"::"dN"((p)) :"eax"\
-)  /* Valeu Fred */
 
 BYTE mouse_status,delta_x,delta_y,buffer_mouse[3];
 
