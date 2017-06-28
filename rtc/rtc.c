@@ -9,6 +9,7 @@
  */
 
 
+// o RTC também pode gerar diferentes taxa de frequência
 
 #include <io.h>
 #include <rtc.h>
