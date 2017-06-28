@@ -66,7 +66,7 @@ posicao_mouse = posicao_mouse + (delta_x);
 
 
 
-// offset entrada no IDT vetor 44, IRQ12
+// Função para entrada no manipulador, IRQ12
 void mouse_irq(){
 
 	buffer_mouse[count_mouse++]=mouse_read();
