@@ -36,7 +36,12 @@ void rtc_install(){
     outb(0x70,0x8B);  // registro status B e desabilita NMI
     status = inb(0x71); // ler actual valor de status B
     outb(0x70,0x8B); // registro status B
-    outb(0x71, status | 0x40); // Hablita interrupções periódica IRQ8
+    outb(0x71, status | 0x67); /* Hablita interrupções periódica IRQ8 bit 6
+,
+                               hablita interrupção de alarme bit 5,
+                              caledário em formato binário bit 2,
+                              formato 24h bit 1  */
+
     enable_NMI();
     sti();
 
