@@ -15,6 +15,8 @@
 #include <rtc.h>
 
 
+BYTE status_c;
+
 
 void disable_NMI(){
 
