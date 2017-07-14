@@ -101,8 +101,10 @@ void P8042_install(){
 	outb(0x64,0xA8);  // activar a segunda porta PS/2
 
 
+kbdc_wait(1);
+  //espera 
 
-/* NOTA. Esta configuração discata o teste do controlador PS/2 e de seus dispositivos. Depois façamos a configuração decente e minuciosa do P8042.
+/* NOTA. Esta configuração discata do teste do controlador PS/2 e de seus dispositivos. Depois façamos a configuração decente e minuciosa do P8042.
  
 */
 
