@@ -220,7 +220,6 @@ goto_2:
 goto_3:
 
 	size_copy = buffer_boot_record.BPB_BytsPerSec * buffer_boot_record.BPB_SecPerClus;
-	cluster_start ++;
 	total_cluster--;
 start:
 	
@@ -246,7 +245,12 @@ start:
 	}
 	rewind(fp2);
 	memset(dados,0,size_colar);
-	if(total_cluster !=0)goto goto_1;
+	if(total_cluster !=0){
+
+              cluster_start ++;  // Aqui devemos pesquisar na tabela de alocação e achar um cluster vazio 0x00000000
+               goto goto_1;
+        }
+
 goto_4:
 
 	printf("Feito!\n"); 
