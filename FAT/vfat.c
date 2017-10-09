@@ -15,7 +15,7 @@
 #define FAT_DIR_ENTRY_SIZE	32
 
 /* Esta estrutura é apenas usada em FAT32. Basta zerar o campo BPB_FATSz16, usar o BPB_FATSz32, em geral
-independentemente do tamanho, todo driver vai ler nosso disco como fat32.*/
+independentemente do tamanho, todo driver vai entender o nosso disco como fat32.*/
 typedef struct fat_bpb {
 
 	char BS_jmpBoot[3];
