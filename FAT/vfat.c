@@ -203,7 +203,7 @@ goto_0:
 	rewind(fp2);
 	memset(dados,0,sizeof(dados));
 
-	resto_cluster = 3;
+	cluster_start = directory.DIR_FstClusLO | directory.DIR_FstClusHI << 16;
 
 	
 goto_1:
