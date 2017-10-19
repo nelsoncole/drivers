@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 
 #define FAT_ATTR_READ_ONLY	0x01
@@ -14,8 +17,7 @@
 
 #define FAT_DIR_ENTRY_SIZE	32
 
-/* Esta estrutura é apenas usada em FAT32. Basta zerar o campo BPB_FATSz16, usar o BPB_FATSz32, em geral
-independentemente do tamanho, todo driver vai entender o nosso disco como fat32.*/
+
 typedef struct fat_bpb {
 
 	char BS_jmpBoot[3];
@@ -49,12 +51,10 @@ typedef struct fat_bpb {
 
 }__attribute__ ((packed)) fat32_t;
 
-
-
-
 typedef struct fat_directory{
 	
-	char DIR_Name[11];
+	char DIR_Name[8];
+	char DIR_Name_Ext[3];
 	unsigned char DIR_Attr;
 	unsigned char DIR_NTRes;
 	unsigned char DIR_CrtTimeTenth;
@@ -81,6 +81,35 @@ int main(int argc, char **argv){
 
 	unsigned char* dados =(unsigned char*)malloc(4096);		
 
+	char ch[4096];
+
+	struct stat st;
+
+
+	stat ("fat",&st);
+
+	printf("inode: %d\n",(int)st.st_ino);
+	printf("size: %dMB\n",(((int)st.st_size)/1024)/1024);
+	//printf("%s\n",(char*)ctime(&st.st_atime));
+	if(S_ISREG(st.st_mode)){
+	printf("Arquivo comum\n");
+	}
+	if(S_ISDIR(st.st_mode)){
+	printf("Directorio\n");
+	}
+
+
+	FILE *fp;
+	if((fp=fopen("fat","r"))==NULL){
+	printf("Erro ao abrir o dir");
+	exit(1); 
+	}
+
+	int i;
+	for(i=0;i<4096;i++)ch[i]=fgetc(fp);
+	for(i=0;i<4096;i++)printf("%X",ch[i]);
+
+	getchar();
 
 	FILE *fp1;
 	if((fp1=fopen("stage1.bin","rb"))==NULL){
@@ -161,10 +190,10 @@ int main(int argc, char **argv){
 
 	/*Escrevendo no Directory raíz FAT32   */
 
-
-
-	char *nome = "stage2     ";
-	strncpy(directory.DIR_Name,nome,11);
+	char *nome = "stage2";
+	char *ext ="bin";
+	strncpy(directory.DIR_Name,nome,8);
+	strncpy(directory.DIR_Name_Ext,ext,3);
 	directory.DIR_Attr = FAT_ATTR_ARCHIVE;
 	directory.DIR_NTRes = 0;
 	directory.DIR_CrtTimeTenth = 0;
@@ -181,7 +210,7 @@ int main(int argc, char **argv){
 goto_0:
 	cluster_start = buffer_boot_record.BPB_RootClus;
 
-	fta_region(fp2,cluster_start,0x0FFFFFF8);	// Valor na Tabala de alocaçoa de arquivos
+	fta_region(fp2,cluster_start,0x0FFFFFFF);	// Valor na Tabala de alocaçoa de arquivos
 
 
 	byte_start =buffer_boot_record.BPB_BytsPerSec
@@ -206,6 +235,7 @@ goto_0:
 
 	cluster_start = directory.DIR_FstClusLO | directory.DIR_FstClusHI << 16;
 
+	
 	
 goto_1:
 	if(total_cluster == 0 && resto_cluster ==0)goto goto_4;
@@ -248,10 +278,9 @@ start:
 	memset(dados,0,size_colar);
 	if(total_cluster !=0){
 
-              cluster_start ++;  // Aqui devemos pesquisar na tabela de alocação e achar um cluster vazio 0x00000000
-               goto goto_1;
-        }
-
+		cluster_start ++;
+		goto goto_1;
+		}
 goto_4:
 
 	printf("Feito!\n"); 
@@ -259,7 +288,7 @@ goto_4:
 	free(dados);
 	fclose(fp1);
 	fclose(fp2);
-	exit(1);
+	exit(0);
 	return 0;
 
 
