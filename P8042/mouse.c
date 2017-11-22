@@ -21,20 +21,6 @@ int count_mouse=0;
 
 WORD posicao_mouse;
 
-
-
-void cursor_mouse(){
-
-	cli();
-	outb(0x3D4,0x0A);
-     	outb(0x3D5,0);
-	outb(0x3D4,0xB);
-     	outb(0x3D5,16);
-	sti();
-
-}
-
-
 void mouse_install(){
 
 	
@@ -43,8 +29,6 @@ void mouse_install(){
 	mouse_write(0xF6);  // dizemos ao rato que use as configurações padrão
 	mouse_write(0xF4);  // agora habilitamos o rato.
 	while(!0xFA)mouse_read();
-	cursor_mouse();
-
 	irq_enable(12);
 
 }
