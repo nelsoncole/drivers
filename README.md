@@ -1,5 +1,4 @@
 # website
 
-! Um repositório de testes. 
+! Um repositório de testes de drivers. 
 , voltado ao desenvolvimento de OS.
-, Não leve muito a sério
