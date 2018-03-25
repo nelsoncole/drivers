@@ -52,8 +52,8 @@ _u8 ide_dma_data(_void *addr,_u16 byte_count,_u8 eot,_u8 nport,_u8 flg)
     
     outb(ata.bus_master_base_address + ide_dma_reg_addr +0,((_u32)ide_dma_prdt[nport -1]));
     outb(ata.bus_master_base_address + ide_dma_reg_addr +1,((_u32)ide_dma_prdt[nport -1] >>8));
-    outb(ata.bus_master_base_address + ide_dma_reg_addr +6,((_u32)ide_dma_prdt[nport -1] >>16));
-    outb(ata.bus_master_base_address + ide_dma_reg_addr +7,((_u32)ide_dma_prdt[nport -1] >>24));
+    outb(ata.bus_master_base_address + ide_dma_reg_addr +2,((_u32)ide_dma_prdt[nport -1] >>16));
+    outb(ata.bus_master_base_address + ide_dma_reg_addr +4,((_u32)ide_dma_prdt[nport -1] >>24));
 
     data = inb(ata.bus_master_base_address + ide_dma_reg_status);
 	outb(ata.bus_master_base_address + ide_dma_reg_status, data &0xf0);
